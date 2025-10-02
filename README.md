@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 👻 Ghost Stop - だるまさんがころんだ型モバイルゲーム
 
-## Getting Started
+おばけが背中向きの時だけスクロールできる「だるまさんがころんだ」型のモバイルWebゲームです。
 
-First, run the development server:
+## 🎮 ゲームの仕組み
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### おばけの状態
+- **🟢 背中向き (BACK)**: スクロールOK！自由にスクロールできます
+- **🟡 振り返り中 (TURNING)**: 警告！スクロール禁止です
+- **🔴 正面向き (FRONT)**: ゲームオーバー！スクロール禁止です
+
+### ルール
+1. 右下のおばけアイコンが**背中向き**の時だけスクロールできます
+2. おばけが**振り返り中**や**正面向き**の時にスクロールすると、**ゲームオーバー**になります
+3. ゲームオーバーになると、自動的にページ最上部に戻されます
+
+## 🖼️ 画像の配置
+
+おばけの画像を配置する場合は、以下のディレクトリに画像ファイルを配置してください：
+
+```
+public/
+└── images/
+    └── ghost/
+        ├── ghost-back.png      # 背中向きのおばけ
+        ├── ghost-turning.png   # 振り返り中のおばけ
+        └── ghost-front.png     # 正面向きのおばけ
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 画像の推奨仕様
+- **形式**: PNG（透明背景推奨）
+- **サイズ**: 64x64px 以上
+- **アスペクト比**: 1:1（正方形）
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+画像が配置されていない場合は、自動的に絵文字が表示されます。
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 開発・デプロイ
 
-## Learn More
+### ローカル開発
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+### ビルド
+```bash
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 技術スタック
+- **フレームワーク**: Next.js (Pages Router)
+- **言語**: TypeScript
+- **スタイリング**: Tailwind CSS v4
+- **画像**: Next.js Image コンポーネント
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📱 モバイル対応
 
-## Deploy on Vercel
+- レスポンシブデザイン
+- タッチスクロール対応
+- モバイル向けのUI/UX設計
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**楽しいゲームをお楽しみください！** 👻
