@@ -60,17 +60,43 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
     }
   }
 
+  const getAnimationClass = () => {
+    switch (ghostState) {
+      case 'BACK':
+        return 'animate-ghost-float' // カスタム浮遊アニメーション
+      case 'TURNING':
+        return 'animate-ghost-warning' // カスタム警告アニメーション
+      case 'FRONT':
+        return 'animate-ghost-angry' // カスタム怒りアニメーション
+      default:
+        return 'animate-ghost-float'
+    }
+  }
+
+  const getContainerAnimation = () => {
+    switch (ghostState) {
+      case 'BACK':
+        return '' // コンテナは静止、画像のみアニメーション
+      case 'TURNING':
+        return 'animate-pulse' // 警告時のコンテナパルス
+      case 'FRONT':
+        return 'animate-ping' // ゲームオーバー時の爆発的効果
+      default:
+        return ''
+    }
+  }
+
   return (
     <div className="fixed bottom-6 right-6 z-50">
       <div className="flex flex-col items-center">
         {/* おばけの画像 */}
-        <div className={`w-20 h-20 rounded-full bg-white shadow-lg border-4 ${getBorderColor()} flex items-center justify-center overflow-hidden`}>
+        <div className={`w-20 h-20 rounded-full bg-white shadow-lg border-4 ${getBorderColor()} flex items-center justify-center overflow-hidden transition-all duration-300 ${getContainerAnimation()}`}>
           <Image
             src={getGhostImage()}
             alt={`おばけ - ${ghostState}`}
             width={64}
             height={64}
-            className="object-contain"
+            className={`object-contain transition-all duration-300 ${getAnimationClass()}`}
             priority
             onError={(e) => {
               // 画像が存在しない場合のフォールバック
@@ -81,7 +107,7 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
           />
         </div>
         {/* 状態テキスト */}
-        <div className="mt-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded text-center min-w-[80px]">
+        <div className={`mt-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded text-center min-w-[80px] transition-all duration-300 ${ghostState === 'TURNING' ? 'animate-pulse' : ''} ${ghostState === 'FRONT' ? 'animate-bounce' : ''}`}>
           {getStateText()}
         </div>
       </div>
