@@ -39,69 +39,37 @@ module.exports = {
             boxShadow: '0 0 0 8px rgba(245, 158, 11, 0.3)'
           },
         },
-        explosion: {
-          '0%': { 
-            transform: 'scale(1) rotate(0deg)',
-            boxShadow: '0 0 0 0 rgba(239, 68, 68, 0.7)',
-            filter: 'brightness(1)'
-          },
-          '10%': { 
-            transform: 'scale(1.1) rotate(3deg)',
-            boxShadow: '0 0 0 5px rgba(239, 68, 68, 0.7)',
-            filter: 'brightness(1.2)'
-          },
-          '20%': { 
-            transform: 'scale(1.2) rotate(-3deg)',
-            boxShadow: '0 0 0 10px rgba(239, 68, 68, 0.5)',
-            filter: 'brightness(1.4)'
-          },
-          '30%': { 
-            transform: 'scale(1.1) rotate(3deg)',
-            boxShadow: '0 0 0 15px rgba(239, 68, 68, 0.3)',
-            filter: 'brightness(1.2)'
-          },
-          '40%': { 
-            transform: 'scale(1.2) rotate(-3deg)',
-            boxShadow: '0 0 0 20px rgba(239, 68, 68, 0.1)',
-            filter: 'brightness(1.4)'
-          },
-          '50%': { 
-            transform: 'scale(1.1) rotate(3deg)',
-            boxShadow: '0 0 0 25px rgba(239, 68, 68, 0)',
-            filter: 'brightness(1.2)'
-          },
-          '60%': { 
-            transform: 'scale(1.2) rotate(-3deg)',
-            boxShadow: '0 0 0 20px rgba(239, 68, 68, 0.1)',
-            filter: 'brightness(1.4)'
-          },
-          '70%': { 
-            transform: 'scale(1.1) rotate(3deg)',
-            boxShadow: '0 0 0 15px rgba(239, 68, 68, 0.3)',
-            filter: 'brightness(1.2)'
-          },
-          '80%': { 
-            transform: 'scale(1.2) rotate(-3deg)',
-            boxShadow: '0 0 0 10px rgba(239, 68, 68, 0.5)',
-            filter: 'brightness(1.4)'
-          },
-          '90%': { 
-            transform: 'scale(1.1) rotate(3deg)',
-            boxShadow: '0 0 0 5px rgba(239, 68, 68, 0.7)',
-            filter: 'brightness(1.2)'
-          },
-          '100%': { 
-            transform: 'scale(1) rotate(0deg)',
-            boxShadow: '0 0 0 0 rgba(239, 68, 68, 0.7)',
-            filter: 'brightness(1)'
-          },
+        vibrate: {
+          '0%, 100%': { transform: 'translateX(0px)' },
+          '10%': { transform: 'translateX(-1px)' },
+          '20%': { transform: 'translateX(1px)' },
+          '30%': { transform: 'translateX(-1px)' },
+          '40%': { transform: 'translateX(1px)' },
+          '50%': { transform: 'translateX(-1px)' },
+          '60%': { transform: 'translateX(1px)' },
+          '70%': { transform: 'translateX(-1px)' },
+          '80%': { transform: 'translateX(1px)' },
+          '90%': { transform: 'translateX(-1px)' },
+        },
+        'flash-red': {
+          '0%': { backgroundColor: 'rgba(239, 68, 68, 0)' },
+          '50%': { backgroundColor: 'rgba(239, 68, 68, 0.3)' },
+          '100%': { backgroundColor: 'rgba(239, 68, 68, 0)' },
         },
       },
       animation: {
         float: 'float 3s ease-in-out infinite',
         'pulse-light': 'pulse-light 1.5s ease-in-out infinite',
         'warning-bounce': 'warning-bounce 0.8s ease-in-out infinite',
-        explosion: 'explosion 1s ease-in-out infinite',
+        vibrate: 'vibrate 0.1s ease-in-out infinite',
+        'flash-red': 'flash-red 0.1s ease-in-out',
+      },
+      boxShadow: {
+        'green-glow': '0 0 20px rgba(34, 197, 94, 0.6)',
+        'yellow-glow': '0 0 20px rgba(234, 179, 8, 0.6)',
+        'orange-glow': '0 0 20px rgba(249, 115, 22, 0.6)',
+        'red-glow': '0 0 20px rgba(239, 68, 68, 0.8)',
+        'gray-glow': '0 0 20px rgba(107, 114, 128, 0.6)',
       },
     },
   },
