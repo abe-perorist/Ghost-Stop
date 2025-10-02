@@ -25,20 +25,20 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
     }
   }
 
-  const getBorderColor = () => {
+  const getBackgroundColor = () => {
     switch (ghostState) {
       case 'BACK':
-        return 'border-green-500' // スクロールOK
+        return 'bg-green-500' // スクロールOK
       case 'TURNING_START':
-        return 'border-yellow-400' // 警告開始
+        return 'bg-yellow-100' // 注意
       case 'TURNING_MID':
-        return 'border-yellow-500' // 警告中間
+        return 'bg-yellow-400' // 警告
       case 'TURNING_END':
-        return 'border-orange-500' // 警告終了
+        return 'bg-orange-500' // 危険
       case 'FRONT':
-        return 'border-red-500' // ゲームオーバー
+        return 'bg-red-600' // ゲームオーバー
       default:
-        return 'border-gray-500'
+        return 'bg-gray-500'
     }
   }
 
@@ -79,17 +79,17 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
   const getAnimationClass = () => {
     switch (ghostState) {
       case 'BACK':
-        return 'animate-ghost-float' // カスタム浮遊アニメーション
+        return 'animate-float' // 軽く上下に浮遊するアニメーション
       case 'TURNING_START':
-        return 'animate-pulse' // 軽いパルス
+        return 'animate-pulse-light' // 弱いパルスアニメーション
       case 'TURNING_MID':
-        return 'animate-ghost-warning' // カスタム警告アニメーション
+        return 'animate-pulse' // 標準のパルスアニメーション
       case 'TURNING_END':
-        return 'animate-bounce' // 激しいバウンス
+        return 'animate-warning-bounce' // 警告を示すような激しいバウンスアニメーション
       case 'FRONT':
-        return 'animate-ghost-angry' // カスタム怒りアニメーション
+        return 'animate-explosion' // ゲームオーバーを視覚的に強調する爆発のようなアニメーション
       default:
-        return 'animate-ghost-float'
+        return 'animate-float'
     }
   }
 
@@ -111,10 +111,10 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed right-4 bottom-4 z-50">
       <div className="flex flex-col items-center">
         {/* おばけの画像 */}
-        <div className={`w-20 h-20 rounded-full bg-white shadow-lg border-4 ${getBorderColor()} flex items-center justify-center overflow-hidden transition-all duration-300 ${getContainerAnimation()}`}>
+        <div className={`w-16 h-16 rounded-full ${getBackgroundColor()} shadow-lg flex items-center justify-center overflow-hidden transition-colors duration-300 ease-in-out ${getContainerAnimation()}`}>
           <Image
             src={getGhostImage()}
             alt={`おばけ - ${ghostState}`}
@@ -131,7 +131,7 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
           />
         </div>
         {/* 状態テキスト */}
-        <div className={`mt-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded text-center min-w-[80px] transition-all duration-300 ${ghostState.includes('TURNING') ? 'animate-pulse' : ''} ${ghostState === 'FRONT' ? 'animate-bounce' : ''}`}>
+        <div className={`mt-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded text-center min-w-[80px] transition-colors duration-300 ease-in-out ${ghostState.includes('TURNING') ? 'animate-pulse' : ''} ${ghostState === 'FRONT' ? 'animate-bounce' : ''}`}>
           {getStateText()}
         </div>
       </div>

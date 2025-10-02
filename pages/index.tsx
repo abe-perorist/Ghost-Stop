@@ -8,40 +8,42 @@ export default function Home() {
 
   // 自動状態遷移
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout
+
     const stateTransition = () => {
       switch (ghostState) {
         case 'BACK':
           // BACK → TURNING_START (3-7秒のランダムな時間)
           const backToTurningDelay = Math.random() * 4000 + 3000 // 3-7秒
-          setTimeout(() => {
+          timeoutId = setTimeout(() => {
             setGhostState('TURNING_START')
           }, backToTurningDelay)
           break
 
         case 'TURNING_START':
-          // TURNING_START → TURNING_MID (0.3秒)
-          setTimeout(() => {
+          // TURNING_START → TURNING_MID (0.2秒)
+          timeoutId = setTimeout(() => {
             setGhostState('TURNING_MID')
-          }, 300)
+          }, 200)
           break
 
         case 'TURNING_MID':
-          // TURNING_MID → TURNING_END (0.3秒)
-          setTimeout(() => {
+          // TURNING_MID → TURNING_END (0.2秒)
+          timeoutId = setTimeout(() => {
             setGhostState('TURNING_END')
-          }, 300)
+          }, 200)
           break
 
         case 'TURNING_END':
-          // TURNING_END → FRONT (0.2秒)
-          setTimeout(() => {
+          // TURNING_END → FRONT (0.4秒)
+          timeoutId = setTimeout(() => {
             setGhostState('FRONT')
-          }, 200)
+          }, 400)
           break
 
         case 'FRONT':
           // FRONT → BACK (1.5秒)
-          setTimeout(() => {
+          timeoutId = setTimeout(() => {
             setGhostState('BACK')
             setGameOver(false) // ゲームオーバー状態をリセット
           }, 1500)
@@ -50,20 +52,29 @@ export default function Home() {
     }
 
     stateTransition()
+
+    // クリーンアップ関数
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+    }
   }, [ghostState])
 
   // スクロール監視
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = (event: Event) => {
       // TURNING系の状態または FRONT の時にスクロールされたらゲームオーバー
       if ((ghostState.includes('TURNING') || ghostState === 'FRONT') && !gameOver) {
+        // ゲームオーバー時のスクロール停止
+        event.preventDefault()
         setGameOver(true)
         // ページ最上部に強制スクロール
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: false })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [ghostState, gameOver])
 
