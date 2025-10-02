@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 
-export type GhostState = 'BACK' | 'TURNING' | 'FRONT'
+export type GhostState = 'BACK' | 'TURNING_START' | 'TURNING_MID' | 'TURNING_END' | 'FRONT'
 
 interface GhostProps {
   ghostState: GhostState
@@ -12,8 +12,12 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
     switch (ghostState) {
       case 'BACK':
         return '/images/ghost/ghost-back.png' // 背中向きのおばけ
-      case 'TURNING':
-        return '/images/ghost/ghost-turning.png' // 振り返り中のおばけ
+      case 'TURNING_START':
+        return '/images/ghost/ghost-turning-start.png' // 振り返り開始
+      case 'TURNING_MID':
+        return '/images/ghost/ghost-turning-mid.png' // 振り返り中間
+      case 'TURNING_END':
+        return '/images/ghost/ghost-turning-end.png' // 振り返り終了
       case 'FRONT':
         return '/images/ghost/ghost-front.png' // 正面向きのおばけ
       default:
@@ -25,8 +29,12 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
     switch (ghostState) {
       case 'BACK':
         return 'border-green-500' // スクロールOK
-      case 'TURNING':
-        return 'border-yellow-500' // 警告色
+      case 'TURNING_START':
+        return 'border-yellow-400' // 警告開始
+      case 'TURNING_MID':
+        return 'border-yellow-500' // 警告中間
+      case 'TURNING_END':
+        return 'border-orange-500' // 警告終了
       case 'FRONT':
         return 'border-red-500' // ゲームオーバー
       default:
@@ -38,8 +46,12 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
     switch (ghostState) {
       case 'BACK':
         return 'スクロールOK'
-      case 'TURNING':
+      case 'TURNING_START':
+        return '注意！'
+      case 'TURNING_MID':
         return '警告！'
+      case 'TURNING_END':
+        return '危険！'
       case 'FRONT':
         return 'ゲームオーバー！'
       default:
@@ -51,8 +63,12 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
     switch (ghostState) {
       case 'BACK':
         return '<div class="text-3xl">👻</div>'
-      case 'TURNING':
+      case 'TURNING_START':
+        return '<div class="text-3xl">😐</div>'
+      case 'TURNING_MID':
         return '<div class="text-3xl">⚠️</div>'
+      case 'TURNING_END':
+        return '<div class="text-3xl">😠</div>'
       case 'FRONT':
         return '<div class="text-3xl">😈</div>'
       default:
@@ -64,8 +80,12 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
     switch (ghostState) {
       case 'BACK':
         return 'animate-ghost-float' // カスタム浮遊アニメーション
-      case 'TURNING':
+      case 'TURNING_START':
+        return 'animate-pulse' // 軽いパルス
+      case 'TURNING_MID':
         return 'animate-ghost-warning' // カスタム警告アニメーション
+      case 'TURNING_END':
+        return 'animate-bounce' // 激しいバウンス
       case 'FRONT':
         return 'animate-ghost-angry' // カスタム怒りアニメーション
       default:
@@ -77,8 +97,12 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
     switch (ghostState) {
       case 'BACK':
         return '' // コンテナは静止、画像のみアニメーション
-      case 'TURNING':
+      case 'TURNING_START':
+        return '' // まだ静か
+      case 'TURNING_MID':
         return 'animate-pulse' // 警告時のコンテナパルス
+      case 'TURNING_END':
+        return 'animate-bounce' // 危険時の激しい動き
       case 'FRONT':
         return 'animate-ping' // ゲームオーバー時の爆発的効果
       default:
@@ -107,7 +131,7 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
           />
         </div>
         {/* 状態テキスト */}
-        <div className={`mt-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded text-center min-w-[80px] transition-all duration-300 ${ghostState === 'TURNING' ? 'animate-pulse' : ''} ${ghostState === 'FRONT' ? 'animate-bounce' : ''}`}>
+        <div className={`mt-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded text-center min-w-[80px] transition-all duration-300 ${ghostState.includes('TURNING') ? 'animate-pulse' : ''} ${ghostState === 'FRONT' ? 'animate-bounce' : ''}`}>
           {getStateText()}
         </div>
       </div>

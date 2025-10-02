@@ -6,7 +6,9 @@
 
 ### おばけの状態
 - **🟢 背中向き (BACK)**: スクロールOK！自由にスクロールできます
-- **🟡 振り返り中 (TURNING)**: 警告！スクロール禁止です
+- **🟡 振り返り開始 (TURNING_START)**: 注意！スクロール禁止です
+- **🟠 振り返り中間 (TURNING_MID)**: 警告！スクロール禁止です
+- **🟠 振り返り終了 (TURNING_END)**: 危険！スクロール禁止です
 - **🔴 正面向き (FRONT)**: ゲームオーバー！スクロール禁止です
 
 ### ルール
@@ -22,9 +24,11 @@
 public/
 └── images/
     └── ghost/
-        ├── ghost-back.png      # 背中向きのおばけ
-        ├── ghost-turning.png   # 振り返り中のおばけ
-        └── ghost-front.png     # 正面向きのおばけ
+        ├── ghost-back.png         # 背中向きのおばけ
+        ├── ghost-turning-start.png # 振り返り開始
+        ├── ghost-turning-mid.png   # 振り返り中間
+        ├── ghost-turning-end.png   # 振り返り終了
+        └── ghost-front.png         # 正面向きのおばけ
 ```
 
 ### 画像の推奨仕様

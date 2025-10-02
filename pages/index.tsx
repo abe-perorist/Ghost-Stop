@@ -11,18 +11,32 @@ export default function Home() {
     const stateTransition = () => {
       switch (ghostState) {
         case 'BACK':
-          // BACK → TURNING (3-7秒のランダムな時間)
+          // BACK → TURNING_START (3-7秒のランダムな時間)
           const backToTurningDelay = Math.random() * 4000 + 3000 // 3-7秒
           setTimeout(() => {
-            setGhostState('TURNING')
+            setGhostState('TURNING_START')
           }, backToTurningDelay)
           break
 
-        case 'TURNING':
-          // TURNING → FRONT (0.7秒)
+        case 'TURNING_START':
+          // TURNING_START → TURNING_MID (0.3秒)
+          setTimeout(() => {
+            setGhostState('TURNING_MID')
+          }, 300)
+          break
+
+        case 'TURNING_MID':
+          // TURNING_MID → TURNING_END (0.3秒)
+          setTimeout(() => {
+            setGhostState('TURNING_END')
+          }, 300)
+          break
+
+        case 'TURNING_END':
+          // TURNING_END → FRONT (0.2秒)
           setTimeout(() => {
             setGhostState('FRONT')
-          }, 700)
+          }, 200)
           break
 
         case 'FRONT':
@@ -41,8 +55,8 @@ export default function Home() {
   // スクロール監視
   useEffect(() => {
     const handleScroll = () => {
-      // TURNING または FRONT の時にスクロールされたらゲームオーバー
-      if ((ghostState === 'TURNING' || ghostState === 'FRONT') && !gameOver) {
+      // TURNING系の状態または FRONT の時にスクロールされたらゲームオーバー
+      if ((ghostState.includes('TURNING') || ghostState === 'FRONT') && !gameOver) {
         setGameOver(true)
         // ページ最上部に強制スクロール
         window.scrollTo({ top: 0, behavior: 'smooth' })
