@@ -5,6 +5,8 @@ import Ghost, { GhostState } from '../components/Ghost'
 export default function Home() {
   const [ghostState, setGhostState] = useState<GhostState>('BACK')
   const [gameOver, setGameOver] = useState(false)
+  const [showFlash, setShowFlash] = useState(false)
+  const [showGameOverModal, setShowGameOverModal] = useState(false)
 
   // 自動状態遷移
   useEffect(() => {
@@ -42,10 +44,20 @@ export default function Home() {
           break
 
         case 'FRONT':
+          // 画面フラッシュ効果
+          setShowFlash(true)
+          setTimeout(() => {
+            setShowFlash(false)
+          }, 100)
+          
+          // ゲームオーバーモーダル表示
+          setShowGameOverModal(true)
+          
           // FRONT → BACK (1.5秒)
           timeoutId = setTimeout(() => {
             setGhostState('BACK')
             setGameOver(false) // ゲームオーバー状態をリセット
+            setShowGameOverModal(false) // ゲームオーバーモーダルを非表示
           }, 1500)
           break
       }
@@ -69,6 +81,16 @@ export default function Home() {
         // ゲームオーバー時のスクロール停止
         event.preventDefault()
         setGameOver(true)
+        
+        // 画面フラッシュ効果
+        setShowFlash(true)
+        setTimeout(() => {
+          setShowFlash(false)
+        }, 100)
+        
+        // ゲームオーバーモーダル表示
+        setShowGameOverModal(true)
+        
         // ページ最上部に強制スクロール
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }
@@ -77,6 +99,12 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll, { passive: false })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [ghostState, gameOver])
+
+  // 再挑戦ハンドラー
+  const handleRestart = () => {
+    window.scrollTo({ top: 0 })
+    setShowGameOverModal(false)
+  }
 
   // ダミーコンテンツの生成
   const renderDummyContent = () => {
@@ -108,16 +136,17 @@ export default function Home() {
           <div className="text-white text-center max-w-md mx-4">
             <h1 className="text-5xl font-bold mb-6">👻 だるまさんがころんだ</h1>
             <div className="text-lg space-y-4">
-              <p>おばけが背中向きの時だけスクロールできます</p>
+              <h2 className="text-2xl font-bold mb-4">【ルール】 おばけが振り向いたら、即ストップ！</h2>
+              <p className="text-xl">おばけが背中を向けている間だけ、そーっとスクロールしてね。</p>
               <div className="bg-black bg-opacity-30 rounded-lg p-4">
                 <p className="text-sm">
-                  🟢 緑 = スクロールOK<br/>
-                  🟡 黄 = 警告（スクロール禁止）<br/>
-                  🔴 赤 = ゲームオーバー（スクロール禁止）
+                  🟢 緑の光 = GO! スクロールOK！<br/>
+                  🟡 黄の光 = STOP! 止まれ！<br/>
+                  🔴 赤の光 = 👀 見たな！
                 </p>
               </div>
-              <p className="text-sm opacity-75">
-                右下のおばけアイコンを確認してください
+              <p className="text-lg font-bold">
+                失敗したら、最初からやり直し！
               </p>
             </div>
           </div>
@@ -126,15 +155,23 @@ export default function Home() {
         {/* ダミーコンテンツ */}
         {renderDummyContent()}
 
-        {/* ゲームオーバー表示 */}
-        {gameOver && (
-          <div className="fixed inset-0 bg-red-500 bg-opacity-90 flex items-center justify-center z-40">
-            <div className="text-white text-center">
-              <h2 className="text-6xl font-bold mb-4">😈 ゲームオーバー！</h2>
-              <p className="text-2xl">おばけに見つかりました！</p>
-              <p className="text-lg mt-4 opacity-75">
-                ページ上部に戻りました
-              </p>
+        {/* 画面フラッシュ効果 */}
+        {showFlash && (
+          <div className="fixed inset-0 animate-flash-red z-50 pointer-events-none" />
+        )}
+
+        {/* ゲームオーバーモーダル */}
+        {showGameOverModal && (
+          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-40">
+            <div className="bg-red-600 text-white p-6 rounded-lg shadow-lg text-center">
+              <h2 className="text-3xl font-bold mb-2">GAME OVER!</h2>
+              <p className="text-lg mb-4">振り向いたのに動いたでしょ？</p>
+              <button
+                onClick={handleRestart}
+                className="bg-white text-red-600 px-4 py-2 rounded font-bold hover:bg-gray-100 transition-colors"
+              >
+                もう一度、最初から挑戦！
+              </button>
             </div>
           </div>
         )}

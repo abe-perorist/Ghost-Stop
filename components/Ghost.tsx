@@ -25,35 +25,35 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
     }
   }
 
-  const getBackgroundColor = () => {
+  const getGlowEffect = () => {
     switch (ghostState) {
       case 'BACK':
-        return 'bg-green-500' // スクロールOK
+        return 'shadow-green-glow' // 淡い緑のグロー
       case 'TURNING_START':
-        return 'bg-yellow-100' // 注意
+        return 'shadow-yellow-glow' // 黄色のグロー
       case 'TURNING_MID':
-        return 'bg-yellow-400' // 警告
+        return 'shadow-yellow-glow' // 黄色のグロー
       case 'TURNING_END':
-        return 'bg-orange-500' // 危険
+        return 'shadow-orange-glow' // オレンジのグロー
       case 'FRONT':
-        return 'bg-red-600' // ゲームオーバー
+        return 'shadow-red-glow' // 強い赤のグロー
       default:
-        return 'bg-gray-500'
+        return 'shadow-gray-glow'
     }
   }
 
   const getStateText = () => {
     switch (ghostState) {
       case 'BACK':
-        return 'スクロールOK'
+        return 'GO! スクロールOK！'
       case 'TURNING_START':
-        return '注意！'
+        return 'STOP! 止まれ！'
       case 'TURNING_MID':
-        return '警告！'
+        return 'STOP! 止まれ！'
       case 'TURNING_END':
-        return '危険！'
+        return 'STOP! 止まれ！'
       case 'FRONT':
-        return 'ゲームオーバー！'
+        return '👀 見たな！'
       default:
         return ''
     }
@@ -87,7 +87,7 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
       case 'TURNING_END':
         return 'animate-warning-bounce' // 警告を示すような激しいバウンスアニメーション
       case 'FRONT':
-        return 'animate-explosion' // ゲームオーバーを視覚的に強調する爆発のようなアニメーション
+        return 'animate-vibrate' // 激しく揺れるアニメーション
       default:
         return 'animate-float'
     }
@@ -114,13 +114,13 @@ const Ghost: React.FC<GhostProps> = ({ ghostState }) => {
     <div className="fixed right-4 bottom-4 z-50">
       <div className="flex flex-col items-center">
         {/* おばけの画像 */}
-        <div className={`w-16 h-16 rounded-full ${getBackgroundColor()} shadow-lg flex items-center justify-center overflow-hidden transition-colors duration-300 ease-in-out ${getContainerAnimation()}`}>
+        <div className={`w-16 h-16 rounded-full flex items-center justify-center overflow-hidden transition-all duration-300 ease-in-out ${getContainerAnimation()}`}>
           <Image
             src={getGhostImage()}
             alt={`おばけ - ${ghostState}`}
             width={64}
             height={64}
-            className={`object-contain transition-all duration-300 ${getAnimationClass()}`}
+            className={`object-contain transition-all duration-300 ${getAnimationClass()} ${getGlowEffect()}`}
             priority
             onError={(e) => {
               // 画像が存在しない場合のフォールバック
